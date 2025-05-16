@@ -11,14 +11,14 @@ pragma solidity ^0.8.24;
  *              for modifiers that are generated and injected programmatically.
  */
 abstract contract RulesEngineClientCustom is RulesEngineClient {
-    modifier checkRulesBeforetransfer(address to, uint256 value) {
-		bytes memory encoded = abi.encodeWithSelector(msg.sig,to, value);
+    modifier checkRulesBeforemint(address to, uint256 amount) {
+		bytes memory encoded = abi.encodeWithSelector(msg.sig,to, amount);
 		_invokeRulesEngine(encoded);
 		_;
 	}
 
-	modifier checkRulesAftertransfer(address to, uint256 value) {
-		bytes memory encoded = abi.encodeWithSelector(msg.sig,to, value);
+	modifier checkRulesAftermint(address to, uint256 amount) {
+		bytes memory encoded = abi.encodeWithSelector(msg.sig,to, amount);
 		_;
 		_invokeRulesEngine(encoded);
 	}

@@ -1,0 +1,23 @@
+{
+  "Policy": "GemToken Owner Verification Policy",
+  "ForeignCalls": [
+    {
+      "name": "owner()",
+      "address": "0x3D26583ebb1eF20850E01337Cce0eaa8E6132b4E",
+      "signature": "owner()",
+      "returnType": "address",
+      "parameterTypes": "address",
+      "encodedIndices": "0"
+    }
+  ],
+  "Trackers": [],
+  "RulesJSON": [
+    {
+      "condition": "FC:owner() == 0x22D5D3e41611BA01087BBAAD7299ACfcb8768A90",
+      "positiveEffects": [],
+      "negativeEffects": ["revert(\"Unauthorized\")"],
+      "functionSignature": "mint(address to, uint256 amount)",
+      "encodedValues": "address to, uint256 amount"
+    }
+  ]
+} 

@@ -74,6 +74,14 @@ async function applyPolicy(policyId: number, callingContractAddress: Address) {
   console.log("Policy applied!");
 }
 
+async function deletePolicy(policyId: number) {
+  await validatePolicyId(policyId);
+
+  // Apply the policy to the contract
+  await RULES_ENGINE.deletePolicy(policyId);
+  console.log("Policy deleted!");
+}
+
 async function validatePolicyId(policyId: number): Promise<boolean> {
   // Check if the policy ID is a valid number
   if (isNaN(policyId) || policyId <= 0) {
@@ -119,11 +127,16 @@ async function main() {
     await validatePolicyId(policyId);
     const callingContractAddress = getAddress(process.argv[4]);
     await applyPolicy(policyId, callingContractAddress);
+  } else if (process.argv[2] == "deletePolicy") {
+    // deletePolicy - npx deletePolicy <policyId>
+    const policyId = Number(process.argv[3]);
+    await deletePolicy(policyId);
   } else {
     console.log("Invalid command. Please use one of the following commands:");
     console.log("     setupPolicy <OPTIONAL: policyJSONFilePath>");
     console.log("     injectModifiers <policyId> <sourceContractFile> <destinationModifierFile>");
     console.log("     applyPolicy <policyId> <address>");
+    console.log("     deletePolicy <policyId>");
   }
 }
 

@@ -1,1 +1,2 @@
 @thrackle-io/forte-rules-engine/=node_modules/@thrackle-io/forte-rules-engine
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/

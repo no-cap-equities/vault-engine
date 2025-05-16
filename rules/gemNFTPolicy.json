@@ -1,0 +1,41 @@
+{
+  "Policy": "GemNFT TVL Tracking Policy",
+  "ForeignCalls": [],
+  "Trackers": [
+    {
+      "name": "TVL",
+      "type": "uint256",
+      "initialValue": "0"
+    }
+  ],
+  "RulesJSON": [
+    {
+      "condition": "true",
+      "positiveEffects": [
+        "TVL += value"
+      ],
+      "negativeEffects": [],
+      "functionSignature": "mint(string uri, uint128 number, uint128 value, string doc, uint128 date)",
+      "encodedValues": "string uri, uint128 number, uint128 value, string doc, uint128 date"
+    },
+    {
+      "condition": "true",
+      "positiveEffects": [
+        "TVL -= lastAppraisal(id).value",
+        "TVL += value"
+      ],
+      "negativeEffects": [],
+      "functionSignature": "appraise(uint256 id, uint128 number, uint128 value, string doc, uint128 date)",
+      "encodedValues": "uint256 id, uint128 number, uint128 value, string doc, uint128 date"
+    },
+    {
+      "condition": "true",
+      "positiveEffects": [
+        "TVL -= lastAppraisal(id).value"
+      ],
+      "negativeEffects": [],
+      "functionSignature": "burn(uint256 id)",
+      "encodedValues": "uint256 id"
+    }
+  ]
+} 
