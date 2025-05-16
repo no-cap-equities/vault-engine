@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-import "src/RulesEngineGemNFTIntegration.sol";
+// import "src/RulesEngineGemNFTIntegration.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract GemNFT is RulesEngineClientCustom, ERC721, ERC721Enumerable, Ownable {
+contract GemNFT is ERC721, ERC721Enumerable, Ownable {
     uint256 private _nextId = 1;
     mapping(uint256 => address) private _owners;
     mapping(uint256 => string) private _uris;

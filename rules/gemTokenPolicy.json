@@ -1,21 +1,29 @@
 {
-  "Policy": "GemToken Owner Verification Policy",
+  "Policy": "GemToken TVL and Price Verification Policy",
   "ForeignCalls": [
     {
-      "name": "owner()",
+      "name": "getGemPrice",
       "address": "0x3D26583ebb1eF20850E01337Cce0eaa8E6132b4E",
-      "signature": "owner()",
-      "returnType": "address",
-      "parameterTypes": "address",
-      "encodedIndices": "0"
+      "signature": "getGemPrice()",
+      "returnType": "uint256",
+      "parameterTypes": "",
+      "encodedIndices": ""
+    },
+    {
+      "name": "getNFTTVL",
+      "address": "0x3D26583ebb1eF20850E01337Cce0eaa8E6132b4E",
+      "signature": "getTVL()",
+      "returnType": "uint256",
+      "parameterTypes": "",
+      "encodedIndices": ""
     }
   ],
   "Trackers": [],
   "RulesJSON": [
     {
-      "condition": "FC:owner() == 0x22D5D3e41611BA01087BBAAD7299ACfcb8768A90",
+      "condition": "FC:getGemPrice() * amount <= FC:getNFTTVL()",
       "positiveEffects": [],
-      "negativeEffects": ["revert(\"Unauthorized\")"],
+      "negativeEffects": ["revert(\"Insufficient TVL for mint amount\")"],
       "functionSignature": "mint(address to, uint256 amount)",
       "encodedValues": "address to, uint256 amount"
     }

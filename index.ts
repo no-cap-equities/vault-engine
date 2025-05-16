@@ -43,6 +43,10 @@ const createTestConfig = async () => {
         chain,
         transport: http(process.env.RPC_URL),
         account,
+        batch: {
+          multicall: true
+        },
+        pollingInterval: 4000,
       })
         .extend(walletActions)
         .extend(publicActions);
@@ -55,9 +59,36 @@ const createTestConfig = async () => {
   });
 };
 
+const createMainnetConfig = async () => {
+  config = createConfig({
+    chains: [process.env.LOCAL_CHAIN == "TRUE" ? foundry : baseSepolia],
+    client({ chain }) {
+      return createClient({
+        chain,
+        transport: http(process.env.RPC_URL),
+        account,
+        batch: {
+          multicall: true
+        },
+        pollingInterval: 4000,
+      })
+        .extend(walletActions)
+        .extend(publicActions);
+    },
+    connectors: [
+      mock({
+        accounts: [process.env.USER_ADDRESS as `0x${string}`],
+      }),
+    ],
+  });
+};
+
 async function setupPolicy(policyData: string): Promise<number> {
   // Create a new policy
-  const result = await RULES_ENGINE.createPolicy(policyData);
+  const result = await RULES_ENGINE.createPolicy(policyData, {
+    maxFeePerGas: 1000000000n, // 1 gwei
+    maxPriorityFeePerGas: 1000000000n, // 1 gwei
+  });
   console.log(`Policy \'${result.policyId}\' created successfully.`);
   return result.policyId;
 }
@@ -97,7 +128,8 @@ async function validatePolicyId(policyId: number): Promise<boolean> {
 }
 
 async function main() {
-  await createTestConfig();
+  // await createTestConfig();
+  await createMainnetConfig();
   var client = config.getClient({ chainId: config.chains[0].id });
   RULES_ENGINE = new RulesEngine(RULES_ENGINE_ADDRESS, config, client);
   await connectConfig(config, 0);
